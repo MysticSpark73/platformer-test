@@ -1,4 +1,3 @@
-using System;
 using PlayerControl;
 using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
@@ -42,6 +41,8 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     private float _jumpGravityMultiplier = 0.8f;
     [SerializeField] 
     private float _rotationSpeed = 10f;
+    [SerializeField] 
+    private float _maxSpeed = 7f;
 
     [Header("Ground Check")]
     [SerializeField] 
@@ -105,7 +106,8 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
         _moveDirection = new Vector3(_inputReader._moveComposite.x, 0f, 0f);
         _movementInputHeld = _moveDirection.magnitude > FloatThreshold;
 
-        _velocity.x = _moveDirection.x * _moveSpeed;
+        _velocity.x += _moveDirection.x * _moveSpeed;
+        _velocity.x = Mathf.Max(Mathf.Min(_velocity.x, _maxSpeed), -_maxSpeed);
         _velocity.z = 0f;
 
         _speed2D = new Vector3(_velocity.x, 0f, _velocity.z).magnitude;
@@ -116,8 +118,12 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
 
     private void CheckIfStopped()
     {
-        _isStopped = _moveDirection.magnitude == 0 && _speed2D < 0.5f;
+        _isStopped = Mathf.Approximately(_moveDirection.magnitude, 0);
         _isWalking = !_isStopped && _isGrounded;
+        if (_isStopped)
+        {
+            _velocity.x = 0;
+        }
     }
 
     private void FaceMoveDirection()
@@ -125,7 +131,7 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
         if (_modelTransform == null)
             return;
 
-        if (_moveDirection.magnitude > 0.01f)
+        if (_moveDirection.magnitude > FloatThreshold)
         {
             Vector3 faceDirection = new Vector3(_velocity.x, 0f, 0f);
             if (faceDirection != Vector3.zero)

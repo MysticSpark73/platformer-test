@@ -1227,11 +1227,12 @@ MonoBehaviour:
   _animator: {fileID: 1169405351}
   _controller: {fileID: 1594576065}
   _modelTransform: {fileID: 1169405352}
-  _moveSpeed: 5
+  _moveSpeed: 0.08
   _jumpForce: 10
   _fallGravityMultiplier: 4
   _jumpGravityMultiplier: 1.5
   _rotationSpeed: 10
+  _maxSpeed: 8
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -1423,6 +1424,10 @@ PrefabInstance:
     - target: {fileID: 1312954102602306489, guid: 21f95507ac4374a82a09035d7ffe9747, type: 3}
       propertyPath: m_Name
       value: SpikeTrapObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 3732527332406952695, guid: 21f95507ac4374a82a09035d7ffe9747, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7529181739862433142, guid: 21f95507ac4374a82a09035d7ffe9747, type: 3}
       propertyPath: m_LocalPosition.x

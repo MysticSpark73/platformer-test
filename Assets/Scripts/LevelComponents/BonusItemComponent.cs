@@ -14,10 +14,10 @@ namespace LevelComponents
         [SerializeField]
         private DamageNumberMesh _damageNumber;
 
-        private Sequence _sequence;
-        private bool _isAnimating;
         private const string BonusText = "+1";
         
+        private Sequence _sequence;
+        private bool _isAnimating;
 
         protected override void OnPlayerEnterAction(IPlayerObject playerObject)
         {

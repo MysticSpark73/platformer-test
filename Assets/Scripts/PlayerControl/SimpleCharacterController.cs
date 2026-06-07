@@ -55,14 +55,14 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     private Vector3 _initialPosition = new Vector3(0f, 0f, 0f);
 
     private Vector3 _velocity;
-    private bool _isGrounded = true;
-    private float _speed2D;
     private Vector3 _moveDirection;
     private int _currentGait;
     private int _jumpCount = 2;
     private float _strafeDirectionX = 0f;
     private float _strafeDirectionZ = 1f;
+    private float _speed2D;
     private float _fallingDuration;
+    private bool _isGrounded = true;
     private bool _isWalking = false;
     private bool _isStopped = true;
     private bool _movementInputHeld = false;
@@ -120,6 +120,7 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     {
         _isStopped = Mathf.Approximately(_moveDirection.magnitude, 0);
         _isWalking = !_isStopped && _isGrounded;
+        
         if (_isStopped)
         {
             _velocity.x = 0;
@@ -128,8 +129,7 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
 
     private void FaceMoveDirection()
     {
-        if (_modelTransform == null)
-            return;
+        if (_modelTransform == null) return;
 
         if (_moveDirection.magnitude > FloatThreshold)
         {

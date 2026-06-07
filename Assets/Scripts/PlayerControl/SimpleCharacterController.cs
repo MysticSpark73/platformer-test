@@ -1,3 +1,4 @@
+using System;
 using PlayerControl;
 using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     private readonly int _isWalkingHash = Animator.StringToHash("IsWalking");
     private readonly int _isStoppedHash = Animator.StringToHash("IsStopped");
     private readonly int _movementInputHeldHash = Animator.StringToHash("MovementInputHeld");
+    private readonly int _fallingDurationHash = Animator.StringToHash("FallingDuration");
 
     [Header("Components")]
     [SerializeField] 
@@ -31,7 +33,9 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     [SerializeField] 
     private float _jumpForce = 10f;
     [SerializeField] 
-    private float _gravityMultiplier = 2f;
+    private float _fallGravityMultiplier = 2f;
+    [SerializeField] 
+    private float _jumpGravityMultiplier = 0.8f;
     [SerializeField] 
     private float _rotationSpeed = 10f;
 
@@ -52,6 +56,7 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     private int _currentGait;
     private float _strafeDirectionX = 0f;
     private float _strafeDirectionZ = 1f;
+    private float _fallingDuration;
     private bool _isWalking = false;
     private bool _isStopped = true;
     private bool _movementInputHeld = false;
@@ -64,13 +69,31 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
 
     private void Update()
     {
-        GroundedCheck();
+        // GroundedCheck();
         CalculateMoveDirection();
         CheckIfStopped();
         FaceMoveDirection();
+    }
+
+    private void FixedUpdate()
+    {
         ApplyGravity();
         Move();
+        GroundedCheck();
         UpdateAnimator();
+    }
+
+    private void GroundedCheck()
+    {
+        Vector3 spherePosition = _controller.transform.position + Vector3.up * _groundedOffset;
+        _isGrounded = Physics.CheckSphere(spherePosition, _controller.radius, _groundLayerMask, QueryTriggerInteraction.Ignore);
+        
+        if (_isGrounded)
+        {
+            _fallingDuration = 0;
+            _velocity.y = 0;
+            _animator.SetBool(_isJumpingAnimHash, false);
+        }
     }
 
     private void CalculateMoveDirection()
@@ -85,22 +108,6 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
         _speed2D = Mathf.Round(_speed2D * 1000f) / 1000f;
 
         CalculateGait();
-    }
-
-    private void CalculateGait()
-    {
-        if (_speed2D < 0.01f)
-        {
-            _currentGait = 0; // Idle
-        }
-        else if (_speed2D < _moveSpeed * 0.5f)
-        {
-            _currentGait = 1; // Walk
-        }
-        else
-        {
-            _currentGait = 2; // Run
-        }
     }
 
     private void CheckIfStopped()
@@ -125,41 +132,25 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
         }
     }
 
-    private void OnJump()
-    {
-        if (_isGrounded)
-        {
-            _velocity.y = _jumpForce;
-            _animator.SetBool(_isJumpingAnimHash, true);
-        }
-    }
-
     private void ApplyGravity()
     {
-        if (_velocity.y > Physics.gravity.y)
-        {
-            _velocity.y += Physics.gravity.y * _gravityMultiplier * Time.deltaTime;
-        }
+        if (_isGrounded) return;
+        
+        _velocity.y += Physics.gravity.y * (_velocity.y > 0
+            ? _jumpGravityMultiplier
+            : _fallGravityMultiplier) * Time.fixedDeltaTime;
 
-        if (_velocity.y <= 0f)
+        Debug.Log($"Velocity = {_velocity}");
+
+        if (_velocity.y <= 0)
         {
-            _animator.SetBool(_isJumpingAnimHash, false);
+            _fallingDuration += Time.fixedDeltaTime;
         }
     }
 
     private void Move()
     {
-        _controller.Move(_velocity * Time.deltaTime);
-    }
-
-    private void GroundedCheck()
-    {
-        Vector3 spherePosition = new Vector3(
-            _controller.transform.position.x,
-            _controller.transform.position.y - _groundedOffset,
-            _controller.transform.position.z
-        );
-        _isGrounded = Physics.CheckSphere(spherePosition, _controller.radius, _groundLayerMask, QueryTriggerInteraction.Ignore);
+        _controller.Move(_velocity * Time.fixedDeltaTime);
     }
 
     private void UpdateAnimator()
@@ -173,11 +164,32 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
         _animator.SetBool(_isWalkingHash, _isWalking);
         _animator.SetBool(_isStoppedHash, _isStopped);
         _animator.SetBool(_movementInputHeldHash, _movementInputHeld);
+        _animator.SetFloat(_fallingDurationHash, _fallingDuration);
     }
 
-    private void OnDestroy()
+    private void CalculateGait()
     {
-        _inputReader.onJumpPerformed -= OnJump;
+        if (_speed2D < 0.01f)
+        {
+            _currentGait = 0; // Idle
+        }
+        else if (_speed2D < _moveSpeed * 0.5f)
+        {
+            _currentGait = 1; // Walk
+        }
+        else
+        {
+            _currentGait = 2; // Run
+        }
+    }
+
+    private void OnJump()
+    {
+        if (_isGrounded)
+        {
+            _velocity.y = _jumpForce;
+            _animator.SetBool(_isJumpingAnimHash, true);
+        }
     }
 
     public void KillZoneEntered()
@@ -189,5 +201,16 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
         _velocity = Vector3.zero;
         _moveDirection = Vector3.zero;
         _speed2D = 0f;
+    }
+
+    private void OnDestroy()
+    {
+        _inputReader.onJumpPerformed -= OnJump;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = _isGrounded ? Color.green : Color.red;
+        Gizmos.DrawSphere(_controller.transform.position + Vector3.up * _groundedOffset, _controller.radius);
     }
 }

@@ -1228,15 +1228,15 @@ MonoBehaviour:
   _controller: {fileID: 1594576065}
   _modelTransform: {fileID: 1169405352}
   _moveSpeed: 0.08
-  _jumpForce: 10
-  _fallGravityMultiplier: 4
-  _jumpGravityMultiplier: 1.5
+  _jumpForce: 9
+  _fallGravityMultiplier: 4.5
+  _jumpGravityMultiplier: 1.25
   _rotationSpeed: 10
   _maxSpeed: 8
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  _groundedOffset: 0.1
+  _groundedOffset: 0.25
   _initialPosition: {x: 0, y: 0, z: 0}
 --- !u!143 &1594576065
 CharacterController:
@@ -1427,7 +1427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3732527332406952695, guid: 21f95507ac4374a82a09035d7ffe9747, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7529181739862433142, guid: 21f95507ac4374a82a09035d7ffe9747, type: 3}
       propertyPath: m_LocalPosition.x

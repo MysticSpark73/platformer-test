@@ -16,6 +16,10 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     private readonly int _isStoppedHash = Animator.StringToHash("IsStopped");
     private readonly int _movementInputHeldHash = Animator.StringToHash("MovementInputHeld");
     private readonly int _fallingDurationHash = Animator.StringToHash("FallingDuration");
+    
+    private const int MaxJumps = 2;
+    private const float TerminalVelocity = -20;
+    private const float FloatThreshold = 0.01f;
 
     [Header("Components")]
     [SerializeField] 
@@ -54,13 +58,13 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     private float _speed2D;
     private Vector3 _moveDirection;
     private int _currentGait;
+    private int _jumpCount = 2;
     private float _strafeDirectionX = 0f;
     private float _strafeDirectionZ = 1f;
     private float _fallingDuration;
     private bool _isWalking = false;
     private bool _isStopped = true;
     private bool _movementInputHeld = false;
-    
 
     private void Start()
     {
@@ -69,7 +73,6 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
 
     private void Update()
     {
-        // GroundedCheck();
         CalculateMoveDirection();
         CheckIfStopped();
         FaceMoveDirection();
@@ -92,6 +95,7 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
         {
             _fallingDuration = 0;
             _velocity.y = 0;
+            _jumpCount = MaxJumps;
             _animator.SetBool(_isJumpingAnimHash, false);
         }
     }
@@ -99,7 +103,7 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
     private void CalculateMoveDirection()
     {
         _moveDirection = new Vector3(_inputReader._moveComposite.x, 0f, 0f);
-        _movementInputHeld = _moveDirection.magnitude > 0.01f;
+        _movementInputHeld = _moveDirection.magnitude > FloatThreshold;
 
         _velocity.x = _moveDirection.x * _moveSpeed;
         _velocity.z = 0f;
@@ -140,7 +144,7 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
             ? _jumpGravityMultiplier
             : _fallGravityMultiplier) * Time.fixedDeltaTime;
 
-        Debug.Log($"Velocity = {_velocity}");
+        _velocity.y = Mathf.Max(_velocity.y, TerminalVelocity);
 
         if (_velocity.y <= 0)
         {
@@ -185,10 +189,11 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
 
     private void OnJump()
     {
-        if (_isGrounded)
+        if (_isGrounded || _jumpCount > 0)
         {
             _velocity.y = _jumpForce;
             _animator.SetBool(_isJumpingAnimHash, true);
+            _jumpCount--;
         }
     }
 

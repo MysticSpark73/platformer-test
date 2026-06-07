@@ -196,8 +196,8 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0.37170997, b: 0.7484276, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -993,6 +993,47 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3693182100645415993, guid: e0d59b4ec3dfa4da3b5d17c7d9d9f744, type: 3}
   m_PrefabInstance: {fileID: 1232083442}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1235653377 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3310915663862022170, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
+  m_PrefabInstance: {fileID: 4700329097641803772}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1235653380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235653377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab67aad23043414695aa531dd55685cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelComponents.BonusItemComponent
+  playerTag: Player
+  _animationDuration: 1
+  _impactMagnitude: 0.5
+--- !u!65 &1235653381
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235653377}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5, y: 1.5, z: 1.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1246949071
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1227,8 +1268,8 @@ MonoBehaviour:
   _animator: {fileID: 1169405351}
   _controller: {fileID: 1594576065}
   _modelTransform: {fileID: 1169405352}
-  _moveSpeed: 0.08
-  _jumpForce: 9
+  _moveSpeed: 0.1
+  _jumpForce: 8
   _fallGravityMultiplier: 4.5
   _jumpGravityMultiplier: 1.25
   _rotationSpeed: 10
@@ -1425,6 +1466,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpikeTrapObject
       objectReference: {fileID: 0}
+    - target: {fileID: 1312954102602306489, guid: 21f95507ac4374a82a09035d7ffe9747, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3732527332406952695, guid: 21f95507ac4374a82a09035d7ffe9747, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1581,12 +1626,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3310915663862022170, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
       propertyPath: m_Name
-      value: BonusCube (Not Implemented)
+      value: BonusCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 3564459962638377664, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3310915663862022170, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1235653381}
+    - targetCorrespondingSourceObject: {fileID: 3310915663862022170, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1235653380}
   m_SourcePrefab: {fileID: 100100000, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
 --- !u!1001 &6041778916270108989
 PrefabInstance:

@@ -214,6 +214,8 @@ public class SimpleCharacterController : MonoBehaviour, IPlayerObject
         _speed2D = 0f;
     }
 
+    public Transform GetTransform() => transform;
+
     private void OnDestroy()
     {
         _inputReader.onJumpPerformed -= OnJump;

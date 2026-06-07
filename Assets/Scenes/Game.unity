@@ -247,7 +247,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.5, z: -10}
+  m_LocalPosition: {x: 0, y: 2, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -321,7 +321,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 2
+    Time: 1
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -1167,7 +1167,7 @@ Transform:
   m_GameObject: {fileID: 1374530254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.5, z: -10}
+  m_LocalPosition: {x: 0, y: 2, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1191,7 +1191,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 3.5, z: -10}
+  FollowOffset: {x: 0, y: 2, z: -8}
 --- !u!4 &1380927126 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3927286804991457790, guid: 00db8d12d85e34d8fb8129a15308d1e5, type: 3}
@@ -1270,7 +1270,7 @@ MonoBehaviour:
   _controller: {fileID: 1594576065}
   _modelTransform: {fileID: 1169405352}
   _moveSpeed: 0.1
-  _jumpForce: 8
+  _jumpForce: 7
   _fallGravityMultiplier: 4.5
   _jumpGravityMultiplier: 1.25
   _rotationSpeed: 10
@@ -1278,7 +1278,7 @@ MonoBehaviour:
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  _groundedOffset: 0.25
+  _groundedOffset: 0.28
   _initialPosition: {x: 0, y: 0, z: 0}
 --- !u!143 &1594576065
 CharacterController:
@@ -1628,6 +1628,14 @@ PrefabInstance:
     - target: {fileID: 3310915663862022170, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
       propertyPath: m_Name
       value: BonusCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 3399728102816275356, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.300237
+      objectReference: {fileID: 0}
+    - target: {fileID: 3399728102816275356, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
+      propertyPath: m_LODs.Array.data[1].screenRelativeHeight
+      value: 0.06367375
       objectReference: {fileID: 0}
     - target: {fileID: 3564459962638377664, guid: 1443a72aafc50499f83e3830ee1827b6, type: 3}
       propertyPath: m_Enabled

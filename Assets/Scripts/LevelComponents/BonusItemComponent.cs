@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using DamageNumbersPro;
+using DG.Tweening;
 using PlayerControl;
 using UnityEngine;
 
@@ -10,9 +11,12 @@ namespace LevelComponents
         private float _animationDuration = 1f;
         [SerializeField]
         private float _impactMagnitude = .5f;
+        [SerializeField]
+        private DamageNumberMesh _damageNumber;
 
         private Sequence _sequence;
         private bool _isAnimating;
+        private const string BonusText = "+1";
         
 
         protected override void OnPlayerEnterAction(IPlayerObject playerObject)
@@ -24,7 +28,7 @@ namespace LevelComponents
 
         private void SpawnScore()
         {
-            
+            _damageNumber.Spawn(GetRandomPosition(), BonusText);
         }
 
         private void PlayBounceAnimation(IPlayerObject playerObject)
@@ -51,6 +55,13 @@ namespace LevelComponents
             _sequence.OnStart(() => _isAnimating = true);
             _sequence.OnComplete(() => _isAnimating = false);
             return _sequence;
+        }
+
+        private Vector3 GetRandomPosition()
+        {
+            Vector3 xOffset = Vector3.right * Random.Range(0, 6) * .2f * (Random.Range(0, 2) * 2 - 1);
+            Vector3 yOffset = Vector3.up * (Random.Range(0, 6) * .05f + .75f);
+            return transform.position + xOffset + yOffset;
         }
     }
 }
